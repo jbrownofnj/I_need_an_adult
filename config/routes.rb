@@ -32,6 +32,6 @@ Rails.application.routes.draw do
   delete "/deleteUserPrereq/:id", to: "prereqs#destroy_user_prereq"
   post "/createUserPrereq", to: "prereqs#create_user_prereq"
   get '*path',
-  to: 'fallback#index',
-  constraints: ->(req) { !req.xhr? && req.format.html? }
+  to: 'fallback#index'
+  # constraints: ->(req) { !req.xhr? && req.format.html? }
 end

@@ -23,6 +23,7 @@ function Router() {
   }
 
   useEffect(() => {
+    fetch("/cheese")
     fetch('/me').then(res => {if (res.ok) {
                                 res.json().then((user) => {
                                   console.log(user)
