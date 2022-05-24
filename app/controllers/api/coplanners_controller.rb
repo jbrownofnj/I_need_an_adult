@@ -1,5 +1,5 @@
 class Api::CoplannersController < ApplicationController
-  before_action :set_coplanner, only: [ show update destroy ]
+  before_action :set_coplanner, only:[ :show :update :destroy ]
   before_action :is_admin, only: [:index, :show, :destroy, :create, :update]
   before_action :authorize_user,  only: [:index, :show, :create, :update, :destroy]
 
