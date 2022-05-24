@@ -23,10 +23,9 @@ function Router() {
   }
 
   useEffect(() => {
-    fetch("/cheese")
-    fetch('/me').then(res => {if (res.ok) {
+    fetch('api/me').then(res => {if (res.ok) {
                                 res.json().then((user) => {
-                                  console.log(user)
+                                  setLoggedInUser(user)
                                   setAuthChecked(true)})
                               } 
                               else {
@@ -40,7 +39,7 @@ function Router() {
     <BrowserRouter>
           <Routes>
               <Route path="/*" element={<UnAuthApp/>}>
-                  <Route path="loginPage" element={<LoginPage handleSetLoggedInUser={handleSetLoggedInUser}/>}/>
+                  <Route path="loginPage" element={<LoginPage handleAuthCheck={handleAuthCheck} handleSetLoggedInUser={handleSetLoggedInUser}/>}/>
                   <Route path="createAccountPage" element={<CreateAccountPage/>}/>
                   <Route index element={<LoginPage/>}/>
               </Route>
@@ -52,9 +51,9 @@ function Router() {
       <>  
         <BrowserRouter>
             <Routes>
-                <Route path="/*" element={<App />}>
+                <Route path="/*" element={<App loggedInUser={loggedInUser} setAuthChecked={setAuthChecked}/>}>
                   <Route path="tasksPage" element={<TaskPage/>}/>
-                  <Route path="loginPage" element={<LoginPage handleSetLoggedInUser={handleSetLoggedInUser}/>}/>
+                  <Route path="loginPage" element={<LoginPage handleAuthCheck={handleAuthCheck} handleSetLoggedInUser={handleSetLoggedInUser}/>}/>
                     <Route path="calendarPage" element={<CalendarPage/>}/>
                       <Route path="createAccountPage" element={<CreateAccountPage/>}/>
                     <Route index element={<CalendarPage/>}/>

@@ -44,7 +44,7 @@ function CalendarPage() {
         if(initialRender)
         {initialRender=false}
         else
-        {fetch("/getUserEvents").then(res=>res.json()).then(result=>{
+        {fetch("api/getUserEvents").then(res=>res.json()).then(result=>{
             console.log(result)
             result.map((event)=>{
                 const newCalendarEvent={title: `${event.eventName}`, start: new Date(event.eventStart), end: new Date(event.eventEnd), id:event.id, eventDescription:event.eventDescription, eventLocation:event.eventLocation,eventContact:event.eventContact}
@@ -63,7 +63,7 @@ function CalendarPage() {
     function onUpdateEventHandler(e){
         const preppedEvent={id:selectedEvent.id, event_name:selectedEvent.title,event_description: selectedEvent.eventDescription,event_location: selectedEvent.eventLocation,event_contact:selectedEvent.eventContact,event_start:selectedEvent.start,event_end:selectedEvent.end}
        console.log(preppedEvent)
-       fetch(`/updateUserEvent`,{method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify(preppedEvent)}).then(res=>res.json()).then(result=>{
+       fetch(`api/updateUserEvent`,{method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify(preppedEvent)}).then(res=>res.json()).then(result=>{
            console.log(result)
            handleClose()
            
@@ -72,7 +72,7 @@ function CalendarPage() {
     }
 
     function onDeleteEventHandler(e){
-        fetch(`/destroyUserEvent/${selectedEvent.id}`,{method:"DELETE"}).then(res=>res.json()).then(result=>{
+        fetch(`api/destroyUserEvent/${selectedEvent.id}`,{method:"DELETE"}).then(res=>res.json()).then(result=>{
             console.log(result)
             handleClose()
         })
@@ -80,7 +80,7 @@ function CalendarPage() {
 
     function handleAddEvent() {
         setAllEvents([...allEvents, newEvent]);
-        fetch('/addUserEvent',{
+        fetch('api/addUserEvent',{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({event_name:newEvent.title,event_start: `${new Date(newEvent.start)}`,event_end: `${new Date(newEvent.end)}`,event_description:newEvent.eventDescription, event_location:newEvent.eventLocation, event_contact:newEvent.eventContact})

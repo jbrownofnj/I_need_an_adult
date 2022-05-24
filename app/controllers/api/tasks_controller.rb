@@ -1,4 +1,4 @@
-class TasksController < ApplicationController
+class Api::TasksController < ApplicationController
   before_action :set_task, only: %i[ show update destroy ]
   before_action :authorize_user,  only: [:index,:show, :create,:destroy, :update,:get_tasks,:destroy_task,:create_user_task]
   before_action :is_admin, only: [:index,:show, :destroy,:create, :update]
@@ -40,10 +40,8 @@ class TasksController < ApplicationController
   end
 
   def get_tasks
-           
     user_for_task=User.find(session[:current_user])
-   
-    render json:user_for_task.tasks
+    render json:user_for_task.tasks each_serializer: GetUserTasksSerializer
 end
 
 def destroy_task

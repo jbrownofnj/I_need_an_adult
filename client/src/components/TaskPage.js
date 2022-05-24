@@ -18,7 +18,7 @@ function TaskPage({setUser,isLoggedIn,setIsLoggedIn}) {
   }
 
   function completeTaskHandler(id,e){
-    fetch(`/completeTask/${id}`,
+    fetch(`api/completeTask/${id}`,
     {
       method:"DELETE",
     }).then(res=>res.json()).then(result=>{
@@ -27,7 +27,7 @@ function TaskPage({setUser,isLoggedIn,setIsLoggedIn}) {
   }
 
   useEffect(()=>
-    {fetch("/getUserTasks").then(res=>res.json()).then(result=>{
+    {fetch("api/getUserTasks").then(res=>res.json()).then(result=>{
       console.log(result)
       setUserTasks([...result])
     })

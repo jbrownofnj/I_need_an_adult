@@ -8,11 +8,11 @@ class ApplicationController < ActionController::API
     end
 
     def authorize_user
-        return render json: { error: "Not Authorized" }, status: :unauthorized unless current_user
+        return render json: { errors: "Not Authorized" }, status: :unauthorized unless current_user
     end
 
     def is_admin
-        return render json: { error: "Not Authorized" }, status: :unauthorized unless current_user.is_admin
+        return render json: { errors: "Not Authorized" }, status: :unauthorized unless current_user.is_admin
     end
 
     private

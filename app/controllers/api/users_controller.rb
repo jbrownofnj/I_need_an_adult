@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Api::UsersController < ApplicationController
   before_action :set_user, only: %i[ show update destroy ]
   before_action :authorize_user,  only: [:index,:show, :create,:destroy, :update, :me]
   before_action :is_admin, only: [:index,:show, :destroy,:create, :update]

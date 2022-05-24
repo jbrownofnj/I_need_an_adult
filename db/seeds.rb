@@ -1,5 +1,5 @@
 
-john=User.create!(user_name:"John Brown", color_coefficient:1, user_email:"johnbrownsinbox@gmail.com", password:"IAMTHEONLYJOHNBROWN",is_admin:true, confirmation_token:"")
+john=User.create!(user_name:"John Brown", color_coefficient:1, user_email:"johnbrownsinbox@gmail.com", password:"!@QW12qw",is_admin:true, confirmation_token:"")
 cassandra=User.create!(user_name:"Cassandra Cohen", color_coefficient:1, user_email:"cplcohen@gmail.com", password:"firstguestuser",is_admin:false, confirmation_token:"")
 bobby=User.create!(user_name:"Bobby Whocares", color_coefficient:2, user_email:"noonelikesbobby@gmail.com", password:"wechangedhispassword",is_admin:false, confirmation_token:"")
 bully_buster=User.create!(user_name:"The Bully Buster", color_coefficient:2, user_email:"antibullysuperhero@gmail.com", password:"notbobbywhocharress",is_admin:false, confirmation_token:"")

@@ -1,4 +1,4 @@
-class PrereqsController < ApplicationController
+class Api::PrereqsController < ApplicationController
   before_action :set_prereq, only: %i[ show update destroy create_user_prereq destroy_user_prereq]
   before_action :authorize_user,  only: [:index,:show, :create,:destroy, :update, :create_user_prereq, :destroy_user_prereq]
   before_action :is_admin, only: [:index,:show, :destroy,:create, :update]

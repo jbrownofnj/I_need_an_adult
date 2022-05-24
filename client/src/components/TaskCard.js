@@ -10,7 +10,7 @@ function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription=
   const hasPrereqs=prereqTask.length===0?false:true
 
   function onClickDeletePrereq(e,aPrereqTask){
-    fetch(`/deleteUserPrereq/${aPrereqTask.id}`,{method:"DELETE"}).then(res=>res.json()).then(result=>{
+    fetch(`api/deleteUserPrereq/${aPrereqTask.id}`,{method:"DELETE"}).then(res=>res.json()).then(result=>{
       window.location.reload(false);
       console.log(result)
     })
@@ -24,7 +24,7 @@ function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription=
 
   function handleOnClickAddPrereq(e,id){
     console.log("prereq id is"+e)
-    fetch("/createUserPrereq",{
+    fetch("api/createUserPrereq",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({task_id:id,required_task_id:e})

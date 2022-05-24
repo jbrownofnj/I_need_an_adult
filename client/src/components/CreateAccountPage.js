@@ -17,7 +17,7 @@ export default function CreateAccountPage() {
   function handleSubmit(event) {
     event.preventDefault();
     const createThisUser={user_name:userName, color_coefficient:1, user_email:userEmail, password:password}
-    fetch("/createUser",{
+    fetch("api/createUser",{
       method:"POST",
       headers:{
       "Content-Type":"application/json"

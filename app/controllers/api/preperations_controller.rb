@@ -1,4 +1,4 @@
-class PreperationsController < ApplicationController
+class Api::PreperationsController < ApplicationController
   before_action :set_preperation, only: %i[ show update destroy ]
   before_action :authorize_user,  only: [:index,:show, :create,:destroy, :update]
   before_action :is_admin, only: [:index,:show, :destroy,:create, :update]

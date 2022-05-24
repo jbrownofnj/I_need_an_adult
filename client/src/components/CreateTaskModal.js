@@ -20,7 +20,7 @@ function CreateTaskModal({setNewTask,newTask}) {
     }
     function handleAddNewTask(e){
         console.log(newTask)
-        fetch('/createUserTask',{
+        fetch('api/createUserTask',{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({task_name:newTask.newTaskName,task_description:newTask.newTaskDescription,task_location:newTask.newTaskLocation,task_contact:newTask.newTaskContact,duration:newTask.newTaskDuration,task_due_date:`${new Date(newTask.taskDueDate)}`})

@@ -1,35 +1,29 @@
 import React from "react";
 import {useState} from 'react'
-import {useNavigate} from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from 'react-bootstrap/Row'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert"
 
-function LoginPage({handleSetLoggedInUser}) {
+function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
 
   const [password, setPassword] = useState("");
   const [email,setEmail]= useState("");
   const [emailValidated, setEmailValidated] = useState(false);
+  const [emailValidatedOnce, setEmailValidatedOnce] = useState(false);
   const [passwordValidated, setPasswordValidated] = useState(false);
-  const [invalidAttemptPerformed,setInvalidAttemptPerformed]=useState(false)
-
-  function minimumEmailDataSupplied(){
-    return email.length>6
-  }
-
-  function minimumPasswordDataSupplied(){
-    return password.length>6
-  }
+  const [passwordValidatedOnce, setPasswordValidatedOnce] = useState(false);
+  const [invalidAttemptPerformed,setInvalidAttemptPerformed]=useState(false);
+  const [serverError,setServerError]=useState("");
 
   function ValidateEmail(currentEmail){
-    //RFC 2822 standard email validation
-    console.log(currentEmail)
-    const testedEmail=String(currentEmail).toLowerCase()
-    console.log(testedEmail)
-    const matchTest=testedEmail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)!=null;
-    console.log(matchTest)
-    return matchTest
+    // eslint-disable-next-line
+    return String(currentEmail).toLowerCase().match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)!=null;
+  }
+  function ValidatePassword(currentPassword){
+    // eslint-disable-next-line
+    return String(currentPassword).match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/)!=null;
   }
 
   function handleInvalidAttempt(){
@@ -41,28 +35,33 @@ function LoginPage({handleSetLoggedInUser}) {
     const isValid=ValidateEmail(e.target.value)
     console.log(isValid)
     setEmailValidated(isValid)
+    if (!emailValidatedOnce && isValid){
+      setEmailValidatedOnce(true)
+    }
   }
 
   function handlePasswordOnChange(e){
     setPassword(e.target.value)
+    const isValid=ValidatePassword(e.target.value)
+    setPasswordValidated(isValid)
+    if(!passwordValidatedOnce&&isValid){
+      setPasswordValidatedOnce(true)
+    }
   }
 
   function handleSubmit(event) {
-    const loginForm=event.currentTarget
-    if (loginForm.checkValidity()){
-      fetch("/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email, password:password})}
+    event.preventDefault();
+    event.stopPropagation();
+    if (passwordValidated && emailValidated){
+      fetch("api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email, password:password})}
       ).then(res => {
         if (res.ok) {
-          res.json().then(() => {
-          
+          res.json().then((result) => {
+            handleAuthCheck()
           })
         } else {
           res.json().then(errors => {
-            console.log(errors)
-            event.preventDefault();
-            event.stopPropagation();
-            //add a login error on the screen
-  
+            setServerError(errors.errors)
           })
         }
       })
@@ -86,23 +85,31 @@ function LoginPage({handleSetLoggedInUser}) {
               type="email"
               value={email}
               onChange={handleEmailOnChange}
-              isInvalid={invalidAttemptPerformed||minimumEmailDataSupplied()?!emailValidated:null}
+              isInvalid={emailValidatedOnce||invalidAttemptPerformed?!emailValidated:null}
+              isValid={emailValidatedOnce||invalidAttemptPerformed?emailValidated:null}
             />
-            <Form.Control.Feedback type="invalid">Please provide a valid gmail.</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">Please provide a valid gmail account.</Form.Control.Feedback>
             <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
           
           </Form.Group><br/>
           <Form.Group size="lg" controlId="password">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Password</Form.Label><br/>
             <Form.Control
               type="password"
               value={password}
               onChange={handlePasswordOnChange}
-              isInvalid={invalidAttemptPerformed||minimumPasswordDataSupplied()?!passwordValidated:null}
+              isInvalid={passwordValidatedOnce||invalidAttemptPerformed?!passwordValidated:null}
+              isValid={passwordValidatedOnce||invalidAttemptPerformed?passwordValidated:null}
             />
-            <Form.Control.Feedback type="invalid">Please provide a valid gmail.</Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Looks secure!</Form.Control.Feedback>
           </Form.Group><br/>
+          {serverError?<>
+            <Form.Group>
+              <Alert key="danger" danger="danger">
+                The following error has occured: {serverError}
+              </Alert>
+            </Form.Group><br/></>:<></>}
           <Button block size="lg" type="submit">
             Login
           </Button>
