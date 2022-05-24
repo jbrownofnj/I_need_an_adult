@@ -41,7 +41,7 @@ class Api::TasksController < ApplicationController
 
   def get_tasks
     user_for_task=User.find(session[:current_user])
-    render json:user_for_task.tasks each_serializer: GetUserTasksSerializer
+    render json:user_for_task.tasks
 end
 
 def destroy_task
