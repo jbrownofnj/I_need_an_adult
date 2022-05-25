@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_20_150915) do
     t.string "event_contact"
     t.datetime "event_start"
     t.datetime "event_end"
-    t.boolean "private"
+    t.boolean "private", default: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

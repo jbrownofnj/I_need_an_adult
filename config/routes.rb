@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         get :confirm_email
       end
     end
-    
+
     post "/login", to: 'sessions#login'
     delete "/logout", to:'sessions#logout'
     
@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     delete "/completeTask/:id", to: 'tasks#destroy_task' 
   
     get "/getUserEvents", to: "events#get_events"
+    get "/getCoplannerEvents", to: "events#get_coplanner_events"
     post "/addUserEvent", to: "events#add_event"
     patch "/updateUserEvent", to: "events#update_user_event"
     delete "/destroyUserEvent/:id", to: "events#destroy_user_event"

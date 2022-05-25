@@ -9,7 +9,7 @@ class Api::SessionsController < ApplicationController
         else
             if user&.authenticate(params[:password])
                 session[:current_user] = user.id
-                render json: user, status: :ok
+                render json: user, status: :ok, serializer: MeUserSerializer
             else
                 render json: { errors: "Bad username or password" },  status: :unauthorized
             end

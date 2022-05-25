@@ -1,5 +1,5 @@
-class EventSerializer < ActiveModel::Serializer
-  attributes :id, :eventName, :eventDescription, :eventLocation, :eventContact, :eventStart, :eventEnd, :userEmail,:userCoplanner
+class GetUserEventsSerializer < ActiveModel::Serializer
+  attributes :id, :eventName, :eventDescription, :eventLocation, :eventContact, :eventStart, :eventEnd, :userEmail,:eventUser,:private
 
   def eventName
     object.event_name
@@ -22,9 +22,12 @@ class EventSerializer < ActiveModel::Serializer
   def userEmail     
     object.user.user_email
   end
-  def userCoplanner
-    object.user.viewer_users
+  def eventUser
+    object.user.user_name
   end
+  
+
+ 
  
 
 end

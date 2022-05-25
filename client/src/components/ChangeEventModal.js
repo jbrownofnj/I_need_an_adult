@@ -3,16 +3,21 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import DatePicker from "react-datepicker"
-
-function ChangeEventModal({onDeleteEventHandler,onUpdateEventHandler,show,setShow,handleClose,handleShow,selectedEvent,setSelectedEvent}) {
-
+import {useState} from "react"
+function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandler,show,setShow,handleClose,handleShow,selectedEvent,setSelectedEvent}) {
+  const [currentPrivateState,setCurrentPrivateState]=useState(selectedEvent.private)
     function onChangeModalHandler(e){
         setSelectedEvent({...selectedEvent, [e.target.id]: e.target.value})
-        console.log(selectedEvent)
+  
     }
   
     function validateUpdateEventForm() {
         return (selectedEvent.title.length > 0 && selectedEvent.start && selectedEvent.end)
+    }
+    function onChangePrivateSelector(e){
+      
+      setCurrentPrivateState(currentPrivateState=>!currentPrivateState).then(setSelectedEvent({...selectedEvent, [e.target.id]: e.target.value}))
+      
     }
  
 
@@ -20,7 +25,7 @@ function ChangeEventModal({onDeleteEventHandler,onUpdateEventHandler,show,setSho
       <>
         <Modal autoComplete="nope" show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>{selectedEvent.title}</Modal.Title>
+            <Modal.Title>{selectedEvent.title}{selectedEvent.userEmail===loggedInUser.userEmail?<></>:`--event by user:${selectedEvent.eventUser}`}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form autoComplete="nope">
@@ -43,8 +48,9 @@ function ChangeEventModal({onDeleteEventHandler,onUpdateEventHandler,show,setSho
               
                 <DatePicker showTimeSelect placeholderText="Start Date" selected={selectedEvent.start} onChange={(start) => setSelectedEvent({ ...selectedEvent, start })} />
                 <DatePicker showTimeSelect placeholderText="End Date" selected={selectedEvent.end} onChange={(end) => setSelectedEvent({ ...selectedEvent, end })} />
-                <Button variant="primary" type="submit" onClick={onUpdateEventHandler} disabled={!validateUpdateEventForm()}>Save Changes</Button>
-                <Button variant="danger" type="submit" onClick={onDeleteEventHandler}>Delete</Button>
+                {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="primary" type="submit" onClick={onUpdateEventHandler} disabled={!validateUpdateEventForm()}>Save Changes</Button>:<></>}
+                {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="danger" type="submit" onClick={onDeleteEventHandler}>Delete</Button>:<></>}
+                {selectedEvent.userEmail===loggedInUser.userEmail? <Form.Check type="checkbox" onChange={onChangePrivateSelector} value={currentPrivateState} id="private" label="Private?"/>:<></>}
             </Form>
           </Modal.Body>
           <Modal.Footer>

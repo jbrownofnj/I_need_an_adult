@@ -58,6 +58,7 @@ function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
         if (res.ok) {
           res.json().then((result) => {
             handleAuthCheck()
+            handleSetLoggedInUser(result)
           })
         } else {
           res.json().then(errors => {

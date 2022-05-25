@@ -3,7 +3,6 @@ class User < ApplicationRecord
     before_create :confirm_token
     has_many :tasks
     has_many :events
-    
 
     has_many :shower_coplanners, foreign_key: :shower_user_id, class_name: "Coplanner"
     has_many :viewer_users, through: :shower_coplanners

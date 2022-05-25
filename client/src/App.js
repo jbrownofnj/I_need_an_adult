@@ -5,9 +5,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from "react-bootstrap/Navbar"
 import {Nav,NavDropdown} from 'react-bootstrap'
+import EditCoplannersModal from './components/EditCoplannersModal'
+import {useState} from 'react'
 
-function App({setAuthChecked,loggedInUser}) {
-
+function App({setAuthChecked,loggedInUser,handleSetLoggedInUser}) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
+  function onClickEditCoplanner(e){
+    handleShow()
+}
   function onClickLogoutHandler(e){
     console.log(e)
     fetch("api/logout",{method:"DELETE"}).then(res=>res.json()).then(result=>{

@@ -37,7 +37,12 @@ class Api::EventsController < ApplicationController
   
   def get_events
     user_for_events=User.find(session[:current_user])
-    render json: user_for_events.events
+    render json: user_for_events.events, each_serializer: GetUserEventsSerializer
+  end
+
+  def get_coplanner_events
+    user_for_coplanner_events=User.find(session[:current_user])
+    render json: user_for_coplanner_events.shower_users, each_serializer: GetCoplannerEventsSerializer
   end
 
   def add_event
@@ -81,6 +86,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.permit(:event_name, :event_description, :event_location, :event_contant, :enent_start, :event_end, :private)
+      params.permit(:event_name,:event_start,:event_end,:event_description, :event_location, :event_contact, :private)
     end
 end

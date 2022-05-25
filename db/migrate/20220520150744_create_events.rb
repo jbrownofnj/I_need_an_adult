@@ -7,9 +7,9 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.string :event_contact
       t.datetime :event_start
       t.datetime :event_end
-      t.boolean :private
+      t.boolean :private, default: false
       t.references :user, null: false, foreign_key: true
-
+      
       t.timestamps
     end
   end
