@@ -4,7 +4,7 @@ class Api::SessionsController < ApplicationController
     def login
         user = User.find_by(user_email: params[:email])
         if user&.authenticate(params[:password])
-            if user.email_validated(params[:password])
+            if user.email_validated
                 session[:current_user] = user.id
                 render json: user, status: :ok, serializer: MeUserSerializer   
             else 
