@@ -2,7 +2,7 @@
 john=User.create!(user_name:"John Brown", color_coefficient:1, user_email:"johnbrownsinbox@gmail.com", password:"!@QW12qw",is_admin:true, confirmation_token:"",email_validated: true)
 cassandra=User.create!(user_name:"Cassandra Cohen", color_coefficient:1, user_email:"cplcohen@gmail.com", password:"!@QW12qw",is_admin:false, confirmation_token:"",email_validated: true)
 bobby=User.create!(user_name:"Bobby Whocares", color_coefficient:2, user_email:"noonelikesbobby@gmail.com", password:"!@QW12qw",is_admin:false, confirmation_token:"",email_validated: true)
-bully_buster=User.create!(user_name:"The Bully Buster", color_coefficient:2, user_email:"antibullysuperhero@gmail.com", password:"notbobbywhocharress",is_admin:false, confirmation_token:"")
+bully_buster=User.create!(user_name:"The Bully Buster", color_coefficient:2, user_email:"antibullysuperhero@gmail.com", password:"!@QW12qw",is_admin:false, confirmation_token:"")
 #bobby_lets_bully_buster_view=Coplanner.create!(shower_user_id: bobby.id,viewer_user_id: bully_buster.id,viewer_has_been_validated: false, confirmation_token:"")
 ##bobby_lets_cassandra_view=Coplanner.create!(shower_user_id: bobby.id,viewer_user_id: cassandra.id,viewer_has_been_validated: false, confirmation_token:"")
 bobby_lets_john_view=Coplanner.create!(shower_user_id: bobby.id,viewer_user_id: john.id,viewer_has_been_validated: false, confirmation_token:"")

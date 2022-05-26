@@ -13,7 +13,7 @@ class User < ApplicationRecord
     validates :user_name, presence: true, length: {minimum:4,maximum:30}
     validates :color_coefficient, presence: true, numericality: {greater_than:0.1,less_than:3}
     validates :user_email, presence: true, email: {mode: :strict, require_fqdn: true},uniqueness: true
-    validates :password , presence:true, format: { with: /\A^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$\z/, message: "please enter keywords in correct format"} 
+    validates :password , presence:true, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.{8,})(?=.*[^[:alnum:]])/x, message: "please enter keywords in correct format"} 
     private
       def confirm_token
         if self.confirmation_token.blank?
