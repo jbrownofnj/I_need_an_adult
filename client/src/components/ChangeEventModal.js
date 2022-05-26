@@ -15,9 +15,10 @@ function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandle
         return (selectedEvent.title.length > 0 && selectedEvent.start && selectedEvent.end)
     }
     function onChangePrivateSelector(e){
-      
-      setCurrentPrivateState(currentPrivateState=>!currentPrivateState).then(setSelectedEvent({...selectedEvent, [e.target.id]: e.target.value}))
-      
+      console.log(selectedEvent)
+      console.log(selectedEvent.private)
+      setCurrentPrivateState(currentPrivateState=>!currentPrivateState)
+      setSelectedEvent({...selectedEvent,"private":!selectedEvent.private})
     }
  
 
@@ -50,7 +51,7 @@ function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandle
                 <DatePicker showTimeSelect placeholderText="End Date" selected={selectedEvent.end} onChange={(end) => setSelectedEvent({ ...selectedEvent, end })} />
                 {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="primary" type="submit" onClick={onUpdateEventHandler} disabled={!validateUpdateEventForm()}>Save Changes</Button>:<></>}
                 {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="danger" type="submit" onClick={onDeleteEventHandler}>Delete</Button>:<></>}
-                {selectedEvent.userEmail===loggedInUser.userEmail? <Form.Check type="checkbox" onChange={onChangePrivateSelector} value={currentPrivateState} id="private" label="Private?"/>:<></>}
+                {selectedEvent.userEmail===loggedInUser.userEmail? <Form.Check type="checkbox" onChange={onChangePrivateSelector} checked={selectedEvent.private} id="private" label="Private?"/>:<></>}
             </Form>
           </Modal.Body>
           <Modal.Footer>

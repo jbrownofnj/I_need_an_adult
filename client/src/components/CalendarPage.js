@@ -69,7 +69,7 @@ function CalendarPage({loggedInUser}) {
     }
 
     function onUpdateEventHandler(e){
-        const preppedEvent={id:selectedEvent.id, event_name:selectedEvent.title,event_description: selectedEvent.eventDescription,event_location: selectedEvent.eventLocation,event_contact:selectedEvent.eventContact,event_start:selectedEvent.start,event_end:selectedEvent.end}
+        const preppedEvent={id:selectedEvent.id, event_name:selectedEvent.title,private:selectedEvent.private,event_description: selectedEvent.eventDescription,event_location: selectedEvent.eventLocation,event_contact:selectedEvent.eventContact,event_start:selectedEvent.start,event_end:selectedEvent.end}
         console.log(preppedEvent)
         fetch(`api/updateUserEvent`,{method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify(preppedEvent)}).then(res=>res.json()).then(result=>{
             console.log(result)
