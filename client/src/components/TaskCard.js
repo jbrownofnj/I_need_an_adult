@@ -5,39 +5,62 @@ import CloseButton from "react-bootstrap/CloseButton"
 import Dropdown from "react-bootstrap/Dropdown"
 
 
-function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription="N/A",taskLocation="N/A",taskContact="N/A",taskDuration="N/A",taskDueDate=null,completeTaskHandler}) {
-
+function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription="N/A",taskLocation="N/A",taskContact="N/A",taskDuration=0,taskDueDate=null,completeTaskHandler}) {
+  
   const hasPrereqs=prereqTask.length===0?false:true
 
   function onClickDeletePrereq(e,aPrereqTask){
-    fetch(`api/deleteUserPrereq/${aPrereqTask.id}`,{method:"DELETE"}).then(res=>res.json()).then(result=>{
-      window.location.reload(false);
-      console.log(result)
+    console.log(e)
+    console.log(aPrereqTask)
+    fetch(`api/deleteUserPrereq/${aPrereqTask.id}`,{method:"DELETE"}).then(res=>{
+      if (res.ok)
+        {res.json().then(result=>{
+          window.location.reload(false);
+        })}
     })
   }
-
+  function prereqFilter(taskObject){
+    const prereqIDs=prereqTask.map((taskObject)=>taskObject.id)
+    if(prereqIDs.includes(taskObject.id))
+      return false
+    else  
+      return true
+  }
   function prereqMapper(aPrereqTask){
-    return(<> <span key={aPrereqTask.id}>
+    return(<> <span key={`${aPrereqTask.id}span`}>
      {aPrereqTask.taskName}
-    </span> <CloseButton onClick={e=>{onClickDeletePrereq(e,aPrereqTask)}}/></>)
+    </span> <CloseButton key={`${aPrereqTask.id}closebutton`}  id={aPrereqTask.id} onClick={e=>{onClickDeletePrereq(e,aPrereqTask)}}/><br/></>)
+  }
+  function dropdownMapper(aUserTask){
+    if(aUserTask.id!==id){
+      return(<Dropdown.Item eventKey={aUserTask.id} id={aUserTask.id} key={aUserTask.id}> {`${aUserTask.taskName}`} </Dropdown.Item>)
+    }
   }
 
-  function handleOnClickAddPrereq(e,id){
-    console.log("prereq id is"+e)
+  function handleOnClickAddPrereq(event,id){
+    const taskThatNeedsPrereq=id
+    const taskThatWillBePrereq=event
     fetch("api/createUserPrereq",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({task_id:id,required_task_id:e})
-    }).then(res=>res.json()).then(result=>{
-      console.log(result)
-      window.location.reload(false);
+      body:JSON.stringify({independent_task_id:taskThatNeedsPrereq, prereq_task_id:taskThatWillBePrereq})
+    }).then(res=>{
+      if (res.ok)
+        {res.json().then(result=>{
+          window.location.reload(false);
+        })}
     })
   }
 
-  function dropdownMapper(aUserTask){
-    return(<Dropdown.Item eventKey={aUserTask.id} >{`${aUserTask.taskName}`}</Dropdown.Item>)
-  }
+ 
 
+  function durationCalculator(){
+    let totalDuration=taskDuration
+    prereqTask.forEach((task)=>{
+      totalDuration=totalDuration+task.taskDuration
+    })
+    return totalDuration
+  }
   return (
     <Card>
     <Card.Body>
@@ -54,22 +77,22 @@ function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription=
         Contact: {taskContact}
       </Card.Text>
       <Card.Text>
-      Duration: {taskDuration}
+      Duration: {taskDuration}{prereqTask.length>0? `  total: (${durationCalculator()})`:null}
       </Card.Text>
       <Card.Text>
-        Due: {taskDueDate}
+        Due: {new Date(taskDueDate).toDateString()}
       </Card.Text>
       <Card.Text>
-        Prereqs: {hasPrereqs?prereqTask.map(prereqMapper):"N/A"}<br></br>
-        <Dropdown onSelect={e=>handleOnClickAddPrereq(e,id)}>
+        Prereqs: <br/>{hasPrereqs?prereqTask.map(prereqMapper):"N/A"}<br></br>
+      </Card.Text>
+      <Dropdown onSelect={e=>handleOnClickAddPrereq(e,id)} >
           <Dropdown.Toggle variant="success" id="dropdown-basic">
             AddPrereq
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {userTasks.map(dropdownMapper)}
+            {userTasks.filter(prereqFilter).map(dropdownMapper)}
           </Dropdown.Menu>
         </Dropdown>
-      </Card.Text>
     </Card.Body>
     {hasPrereqs?<Button disabled>Must Finish Other Tasks</Button>:<Button as="input" type="submit" value="Complete" onClick={e=>completeTaskHandler(id,e)}/>}
   </Card>

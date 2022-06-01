@@ -3,9 +3,9 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import DatePicker from "react-datepicker"
-import {useState} from "react"
+
 function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandler,show,setShow,handleClose,handleShow,selectedEvent,setSelectedEvent}) {
-  const [currentPrivateState,setCurrentPrivateState]=useState(selectedEvent.private)
+
     function onChangeModalHandler(e){
         setSelectedEvent({...selectedEvent, [e.target.id]: e.target.value})
   
@@ -17,7 +17,7 @@ function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandle
     function onChangePrivateSelector(e){
       console.log(selectedEvent)
       console.log(selectedEvent.private)
-      setCurrentPrivateState(currentPrivateState=>!currentPrivateState)
+   
       setSelectedEvent({...selectedEvent,"private":!selectedEvent.private})
     }
  
@@ -32,23 +32,23 @@ function ChangeEventModal({loggedInUser,onDeleteEventHandler,onUpdateEventHandle
             <Form autoComplete="nope">
                 <Form.Group className="mb-3" controlId="title">
                     <Form.Label>Event Name</Form.Label>
-                    <Form.Control autoComplete="nope" value={selectedEvent.title} onChange={onChangeModalHandler}/>
+                    <Form.Control disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} autoComplete="nope" value={selectedEvent.title} onChange={onChangeModalHandler}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="eventLocation">
                     <Form.Label>Location</Form.Label>
-                    <Form.Control type="text"  value={selectedEvent.eventLocation} onChange={onChangeModalHandler}/>
+                    <Form.Control disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} type="text"  value={selectedEvent.eventLocation} onChange={onChangeModalHandler}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="eventContact">
                     <Form.Label>Contact</Form.Label>
-                    <Form.Control type="text"  value={selectedEvent.eventContact} onChange={onChangeModalHandler}/>
+                    <Form.Control disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} type="text"  value={selectedEvent.eventContact} onChange={onChangeModalHandler}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="eventDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="text"  value={selectedEvent.eventDescription} onChange={onChangeModalHandler}/>
+                    <Form.Control disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} type="text"  value={selectedEvent.eventDescription} onChange={onChangeModalHandler}/>
                 </Form.Group>
               
-                <DatePicker showTimeSelect placeholderText="Start Date" selected={selectedEvent.start} onChange={(start) => setSelectedEvent({ ...selectedEvent, start })} />
-                <DatePicker showTimeSelect placeholderText="End Date" selected={selectedEvent.end} onChange={(end) => setSelectedEvent({ ...selectedEvent, end })} />
+                <DatePicker disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} showTimeSelect placeholderText="Start Date" selected={selectedEvent.start} onChange={(start) => setSelectedEvent({ ...selectedEvent, start })} />
+                <DatePicker disabled={selectedEvent.userEmail===loggedInUser.userEmail?false:true} showTimeSelect placeholderText="End Date" selected={selectedEvent.end} onChange={(end) => setSelectedEvent({ ...selectedEvent, end })} />
                 {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="primary" type="submit" onClick={onUpdateEventHandler} disabled={!validateUpdateEventForm()}>Save Changes</Button>:<></>}
                 {selectedEvent.userEmail===loggedInUser.userEmail?<Button variant="danger" type="submit" onClick={onDeleteEventHandler}>Delete</Button>:<></>}
                 {selectedEvent.userEmail===loggedInUser.userEmail? <Form.Check type="checkbox" onChange={onChangePrivateSelector} checked={selectedEvent.private} id="private" label="Private?"/>:<></>}

@@ -5,21 +5,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Navbar from "react-bootstrap/Navbar"
 import {Nav,NavDropdown} from 'react-bootstrap'
-import EditCoplannersModal from './components/EditCoplannersModal'
-import {useState} from 'react'
 
 function App({setAuthChecked,loggedInUser,handleSetLoggedInUser}) {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  
-  function onClickEditCoplanner(e){
-    handleShow()
-}
   function onClickLogoutHandler(e){
     console.log(e)
     fetch("api/logout",{method:"DELETE"}).then(res=>res.json()).then(result=>{
       console.log(result)
+      e.preventDefault()
       setAuthChecked(false)
     })
   }
@@ -37,6 +29,7 @@ function App({setAuthChecked,loggedInUser,handleSetLoggedInUser}) {
                     <Nav.Link href="/">Home</Nav.Link>
                     <Nav.Link href="loginPage">Login</Nav.Link>
                     <Nav.Link href="createAccountPage">Create account</Nav.Link>
+                    <Nav.Link href="coplannerPage">Coplanners</Nav.Link>
                     <NavDropdown title="Views" id="basic-nav-dropdown">
                       <NavDropdown.Item href="tasksPage">To Do List</NavDropdown.Item>
                       <NavDropdown.Item href="calendarPage">Calendar</NavDropdown.Item>
@@ -56,9 +49,7 @@ function App({setAuthChecked,loggedInUser,handleSetLoggedInUser}) {
           </Navbar>
         </Col>
       </Row>
-    
         <Outlet/>
-   
     </Container>
   );
 }

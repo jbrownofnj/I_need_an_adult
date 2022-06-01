@@ -11,19 +11,60 @@ function CreateTaskModal({setNewTask,newTask}) {
     const handleShow = () => setShow(true);
     
     function onChangeModalHandler(e){
+      if (e.target.id==="newTaskDurationMinutes"||e.target.id==="newTaskDurationHours")
+      {
+        if(e.target.id==="newTaskDurationMinutes")
+        {
+          const currentDuration=newTask.newTaskDuration
+          console.log(currentDuration)        
+          const currentHours=Math.floor(currentDuration/60) 
+          console.log(typeof currentHours)   
+          let newMinutes=0
+          if (e.target.value){
+            newMinutes=parseInt(e.target.value)
+          }
+          console.log(typeof newMinutes) 
+          const newTime=currentHours*60+newMinutes
+          console.log(typeof newTime)
+          setNewTask({...newTask, ["newTaskDuration"]: newTime})
+        }
+        if(e.target.id==="newTaskDurationHours")
+        {
+          const currentDuration=newTask.newTaskDuration   
+          console.log(currentDuration)    
+          const currentMinutes=currentDuration%60    
+          console.log(currentMinutes) 
+          let newHours=0
+          if (e.target.value){
+            newHours=parseInt(e.target.value)
+          }
+          console.log(newHours)
+          const newTime=newHours*60+currentMinutes
+          console.log(typeof newTime)
+          setNewTask({...newTask, ["newTaskDuration"]: newTime})
+        }
+      }
+      else{
         console.log(e)
         setNewTask({...newTask, [e.target.id]: e.target.value})
+      }
+  
         
     }
     function validateNewTask(){
-        return(newTask.newTaskName)
+        if(newTask.newTaskName){
+          return true
+        }
+        else{
+          return false
+        }
     }
     function handleAddNewTask(e){
-        console.log(newTask)
+        console.log(newTask.newTaskDueDate)
         fetch('api/createUserTask',{
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({task_name:newTask.newTaskName,task_description:newTask.newTaskDescription,task_location:newTask.newTaskLocation,task_contact:newTask.newTaskContact,duration:newTask.newTaskDuration,task_due_date:`${new Date(newTask.taskDueDate)}`})
+            body:JSON.stringify({task_name:newTask.newTaskName,task_description:newTask.newTaskDescription,task_location:newTask.newTaskLocation,task_contact:newTask.newTaskContact,task_duration:newTask.newTaskDuration,task_due_date:`${new Date(newTask.newTaskDueDate)}`})
         }).then(res=>res.json()).then(result=>{
             console.log(result)
             handleClose()
@@ -60,18 +101,21 @@ function CreateTaskModal({setNewTask,newTask}) {
                     <Form.Label>Task Contact</Form.Label>
                     <Form.Control autoComplete="nope" value={newTask.newTaskContact} onChange={onChangeModalHandler}/>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="newTaskDuration">
-                    <Form.Label>Task Duration in minutes</Form.Label>
-                    <Form.Control autoComplete="nope" type="number" value={newTask.newTaskDuration} onChange={onChangeModalHandler}/>
+                <Form.Group className="mb-3" >
+                    <Form.Label>Task Duration:</Form.Label>
+                        <br/>Minutes
+                    <Form.Control max={59} min={0} autoComplete="nope" type="number" id="newTaskDurationMinutes" value={newTask.newTaskDuration%60} onChange={onChangeModalHandler}/>
+                    Hours
+                    <Form.Control max={23} min={0} autoComplete="nope" type="number" id="newTaskDurationHours" value={Math.floor(newTask.newTaskDuration/60)} onChange={onChangeModalHandler}/>
                 </Form.Group>
-                <DatePicker placeholderText="Due Date" selected={newTask.newTaskDueDate} onChange={e=>setNewTask({...newTask, newTaskDueDate: e})} />
+                <DatePicker placeholderText="Due Date" selected={newTask.newTaskDueDate} onChange={e=>setNewTask({...newTask, newTaskDueDate:e})}/>
               </Form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" disable={validateNewTask()} onClick={handleAddNewTask}>
+            <Button variant="primary" disabled={!(newTask.newTaskName)} onClick={handleAddNewTask}>
               Add
             </Button>
           </Modal.Footer>

@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert"
-
+import {useNavigate} from "react-router-dom"
 function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
 
   const [password, setPassword] = useState("");
@@ -15,8 +15,8 @@ function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
   const [passwordValidated, setPasswordValidated] = useState(false);
   const [passwordValidatedOnce, setPasswordValidatedOnce] = useState(false);
   const [invalidAttemptPerformed,setInvalidAttemptPerformed]=useState(false);
-  const [serverError,setServerError]=useState("");
-
+  const [serverErrors,setServerErrors]=useState([]);
+  const navigate=useNavigate()
   function ValidateEmail(currentEmail){
     // eslint-disable-next-line
     return String(currentEmail).toLowerCase().match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)!=null;
@@ -33,7 +33,7 @@ function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
   function handleEmailOnChange(e){
     setEmail(e.target.value) 
     const isValid=ValidateEmail(e.target.value)
-    console.log(isValid)
+    
     setEmailValidated(isValid)
     if (!emailValidatedOnce && isValid){
       setEmailValidatedOnce(true)
@@ -57,12 +57,18 @@ function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
       ).then(res => {
         if (res.ok) {
           res.json().then((result) => {
-            handleAuthCheck()
-            handleSetLoggedInUser(result)
+            if (result.userEmail===email){
+              handleAuthCheck()
+              handleSetLoggedInUser(result)
+              navigate("/tasksPage");
+            }
+           else{
+             setServerErrors(serverErrors=>[...serverErrors,result.errors])
+           }
           })
         } else {
-          res.json().then(errors => {
-            setServerError(errors.errors)
+          res.json().then(result => {
+            setServerErrors(serverErrors=>[...serverErrors,result.errors])
           })
         }
       })
@@ -105,13 +111,13 @@ function LoginPage({handleAuthCheck,handleSetLoggedInUser}) {
             <Form.Control.Feedback type="invalid">Please provide a valid password.</Form.Control.Feedback>
             <Form.Control.Feedback type="valid">Looks secure!</Form.Control.Feedback>
           </Form.Group><br/>
-          {serverError?<>
-            <Form.Group>
-              <Alert key="danger" danger="danger">
-                The following error has occured: {serverError}
+          {serverErrors.length>0?<>
+            <Form.Group >
+              <Alert key="danger" variant="danger">
+                The following errors have occured: <br/>{serverErrors.map((error)=>{return(<>{error}<br/></>)})}
               </Alert>
             </Form.Group><br/></>:<></>}
-          <Button block size="lg" type="submit">
+          <Button disabled={!(emailValidated&&passwordValidated)} size="lg" type="submit">
             Login
           </Button>
         </Form>

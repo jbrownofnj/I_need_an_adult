@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hello, <%= @shower.user_name %></h1>
+    <p>
+      The user: <%= @viewer.user_name %> has requested to be able to see your events.<br>
+    </p>
+    <p>
+      To allow them to see your events click the link below: 
+    </p>
+    <%= confirm_coplanner_api_coplanner_url(@new_coplanner.confirmation_token) %>
+  </body>
+</html>

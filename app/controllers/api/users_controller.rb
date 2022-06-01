@@ -5,15 +5,12 @@ class Api::UsersController < ApplicationController
 
   def index
     @users = User.all
-
     render json: @users
   end
-
 
   def show
     render json: @user
   end
-
 
   def create
     @user = User.new(user_params)
@@ -25,7 +22,6 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
       render json: @user
@@ -34,23 +30,26 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
   def destroy
     @user.destroy
   end
 
-def me
-  render json: User.find(session[:current_user]), status: :ok, serializer: MeUserSerializer 
-end
+  def me
+    render json: User.find(session[:current_user]), status: :ok, serializer: MeUserSerializer 
+  end
+
+  def get_coplanner_users
+    user=User.find(session[:current_user])
+    render json: user.shower_users, each_serializer: GetCoplannersSerializer
+  end
 
   def create_user
-    @user = User.new(user_params)    
+    @user = User.new(user_params) 
     if @user.save
       UserMailer.registration_confirmation(@user).deliver_later
-      #flash[:success] = "Please confirm your email address to continue"
-      render jason:{message:"nicely created"}
+      render json:{message:"nicely created"}
     else
-      render jason:{errors:"oops something went wrong"}
+      render json:{errors:"oops something went wrong"}
     end
   end
 

@@ -49,7 +49,7 @@ class Api::EventsController < ApplicationController
     user_for_event=User.find(session[:current_user])
     new_event=user_for_event.events.build(event_params)
     if new_event.save
-        render json:new_event, status: :created
+        render json:new_event, status: :created, serializer: GetUserEventsSerializer
     else
         render json: {errors:"That event didnt work"}, status: :unprocessable_entity
     end

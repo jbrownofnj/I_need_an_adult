@@ -17,6 +17,6 @@ class Api::SessionsController < ApplicationController
 
     def logout
         session[:current_user]=nil
-        render json:{success:"hopefully you logged out"}
+        render json:{success:"hopefully you logged out"}, status: :ok
     end 
 end

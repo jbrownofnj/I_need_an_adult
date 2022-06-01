@@ -2,9 +2,13 @@ Rails.application.routes.draw do
   namespace :api do
     resources :preperations
     resources :events
-    resources :prereqs
+    resources :prereqs 
     resources :tasks
-    resources :coplanners
+    resources :coplanners do
+      member do
+        get :confirm_coplanner
+      end
+    end
     resources :users do
       member do
         get :confirm_email
@@ -29,6 +33,11 @@ Rails.application.routes.draw do
    
     delete "/deleteUserPrereq/:id", to: "prereqs#destroy_user_prereq"
     post "/createUserPrereq", to: "prereqs#create_user_prereq"
+
+    get "/getCoplannerUsers", to: "users#get_coplanner_users"
+    post "/requestCoplanner", to: "coplanners#create_viewer_coplanner"
+    delete "/deleteShowerCoplanner", to: "coplanners#destroy_shower_coplanner"
+    delete "/deleteViewerCoplanner", to: "coplanners#destroy_viewer_coplanner"
   end
   
     get '*path',

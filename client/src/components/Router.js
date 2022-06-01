@@ -7,10 +7,11 @@ import CreateAccountPage from './CreateAccountPage'
 import LoginPage from "./LoginPage"
 import TaskPage from './TaskPage'
 import CalendarPage from './CalendarPage'
+import CoplannerPage from './CoplannerPage'
 
 function Router() {
 
-  const [authChecked,setAuthChecked]=useState(true)
+  const [authChecked,setAuthChecked]=useState(false)
   const [loggedInUser,setLoggedInUser]=useState({})
   
   function handleSetLoggedInUser(user){
@@ -43,6 +44,7 @@ function Router() {
                   <Route path="loginPage" element={<LoginPage handleAuthCheck={handleAuthCheck} handleSetLoggedInUser={handleSetLoggedInUser}/>}/>
                   <Route path="calendarPage" element={<CalendarPage loggedInUser={loggedInUser}/>}/>
                   <Route path="createAccountPage" element={<CreateAccountPage/>}/>
+                  <Route path="coplannerPage" element={<CoplannerPage handleSetLoggedInUser={handleSetLoggedInUser} loggedInUser={loggedInUser}/>}/>
                   <Route index element={<CalendarPage loggedInUser={loggedInUser}/>}/>
                 </Route>
             </Routes>

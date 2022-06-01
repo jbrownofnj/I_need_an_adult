@@ -17,8 +17,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_20_150915) do
   create_table "coplanners", force: :cascade do |t|
     t.integer "shower_user_id", null: false
     t.integer "viewer_user_id", null: false
-    t.boolean "viewer_has_been_validated"
-    t.string "confirmation_token"
+    t.boolean "viewer_has_been_validated", default: false
+    t.string "confirmation_token", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shower_user_id"], name: "index_coplanners_on_shower_user_id"
