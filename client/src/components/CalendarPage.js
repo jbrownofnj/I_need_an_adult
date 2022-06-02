@@ -59,11 +59,21 @@ function CalendarPage() {
                 }
             })
 
-            fetch("api/getUserEvents").then(res=>res.json()).then(result=>{
-                result.forEach((event)=>{
-                    const newCalendarEvent={title: `${event.eventName}`, userEmail:event.userEmail, eventUser:event.eventUser, private:event.private, start: new Date(event.eventStart), end: new Date(event.eventEnd), id:event.id, eventDescription:event.eventDescription, eventLocation:event.eventLocation, eventContact:event.eventContact}
-                    setAllEvents(allEvents=>[...allEvents, newCalendarEvent]);
-                })
+            fetch("api/getUserEvents").then(res=>{
+                if(res.ok){
+                    res.json().then(result=>{
+                        result.forEach((event)=>{
+                            console.log(event)
+                            const newCalendarEvent={title: `${event.eventName}`, userEmail:event.userEmail, eventUser:event.eventUser, private:event.private, start: new Date(event.eventStart), end: new Date(event.eventEnd), id:event.id, eventDescription:event.eventDescription, eventLocation:event.eventLocation, eventContact:event.eventContact}
+                            setAllEvents(allEvents=>[...allEvents, newCalendarEvent]);
+                        })
+                    })
+                }
+                else
+                {
+                    console.log(res)
+                }
+            
             })
 
             fetch("api/getCoplannerUsers").then(res=>res.json()).then(result=>{
@@ -106,7 +116,7 @@ function CalendarPage() {
         }
     }
     function colorDropdownMapper(showerUser,aColorArray){
-        console.log("starting dowpdown for :"+showerUser.userEmail)
+        
             return(
                 <Dropdown key={showerUser.userEmail} id={showerUser.userEmail}>
                 <style  type="text/css">{`.btn-unselected {background-color: white; color: darkgrey`}</style>
@@ -123,7 +133,7 @@ function CalendarPage() {
                     {aColorArray.map((aColor)=>{
                         if(!Object.values(showerUserColorPairs).includes(aColor))
                             {
-                                console.log(`${aColor}-${showerUser.userEmail}`)
+                                
                                 return(<Dropdown.Item key={`${aColor}-${showerUser.userEmail}`} onClick={e=>handleOnClickColorSelect(e,showerUser,aColorArray,aColor)} style={{color:(aColor==="SkyBlue"||aColor==="Orange"||aColor==="Gold"||aColor==="Disable")?"black":"#fff",backgroundColor:`${aColor}`,border:"1px solid black"}}  value={`${aColor}`}>{aColor}</Dropdown.Item>)
                             }      
                         else
