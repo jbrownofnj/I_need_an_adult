@@ -184,7 +184,10 @@ function CalendarPage() {
                 console.log(result.eventName)
                 console.log(newEvent.title)
                 if (result.eventName===newEvent.title)
-                {setAllEvents([...allEvents, newEvent]);}
+                {
+                    console.log("ping")
+                    setAllEvents([...allEvents, newEvent]);}
+                    window.location.reload();
             })
             }
             else

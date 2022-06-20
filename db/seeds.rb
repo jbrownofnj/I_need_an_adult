@@ -35,8 +35,8 @@ call_kendra_before_buy_cat_treer=Prereq.create!(independent_task_id: buy_cat_tre
 do_project_john=Event.create!(user:john, event_name:"Do Project", event_description:"All of it",event_location:"Home", event_contact:"Me", event_start: DateTime.parse("1 June 2022"),event_end: DateTime.parse("1 June 2022"))
 beach_weekend_for_john=Event.create!(user:janet, event_name:"Beach Weekend", event_description:"Long weekend with the family",event_location:"NJ shore", event_contact:"Jean Brown", event_start: DateTime.parse("5 June 2022"),event_end: DateTime.parse("8 June 2022"))
 job_search_for_john=Event.create!(user:john, event_name:"Find Job", event_description:"Get Job",event_location:"Home", event_contact:"Me", event_start: DateTime.parse("1 June 2022"),event_end: DateTime.parse("8 June 2022"))
-ponder_existentially=Event.create!(user:bobby, event_name:"Ponder the Meaning of it all", event_description:"Do it",event_location:"Home", event_contact:"Me", event_start: DateTime.parse("17 May 2022"),event_end: DateTime.parse("18 May 2022") )
-play_soccer=Event.create!(user:lisa, event_name:"Play Soccer", event_description:"Fun fun",event_location:"School", event_contact:"Coach Fran", event_start: DateTime.parse("17 May 2022"),event_end: DateTime.parse("25 May 2022") )
+ponder_existentially=Event.create!(user:bobby, event_name:"Ponder the Meaning of it all", event_description:"Do it",event_location:"Home", event_contact:"Me", event_start: DateTime.parse("17 June 2022"),event_end: DateTime.parse("18 June 2022") )
+play_soccer=Event.create!(user:lisa, event_name:"Play Soccer", event_description:"Fun fun",event_location:"School", event_contact:"Coach Fran", event_start: DateTime.parse("17 June 2022"),event_end: DateTime.parse("25 June 2022") )
 
 buy_cat_tree_before_beach_weekend=Preperation.create!(task_id:buy_cat_tree.id,event_id:beach_weekend_for_john.id)
 
