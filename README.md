@@ -1,24 +1,4 @@
 # README
+Hello and thank you for checking out my demo of "I Need An Adult". This web application uses a react front end with client-side routing using react router. The back end is built on ruby rails using a postgresql database. The application features email validation for gmail accounts and allows users to request access to other users public events.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+In order to try the application you need to run "rails s" to start the server and then "npm start" in the client folder, in order to start the front end react application. I hope you enjoy! 

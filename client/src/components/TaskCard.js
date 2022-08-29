@@ -26,11 +26,13 @@ function TaskCard({userTasks, id, prereqTask=[], taskName="N/A",taskDescription=
     else  
       return true
   }
+
   function prereqMapper(aPrereqTask){
     return(<> <span key={`${aPrereqTask.id}span`}>
      {aPrereqTask.taskName}
     </span> <CloseButton key={`${aPrereqTask.id}closebutton`}  id={aPrereqTask.id} onClick={e=>{onClickDeletePrereq(e,aPrereqTask)}}/><br/></>)
   }
+  
   function dropdownMapper(aUserTask){
     if(aUserTask.id!==id){
       return(<Dropdown.Item eventKey={aUserTask.id} id={aUserTask.id} key={aUserTask.id}> {`${aUserTask.taskName}`} </Dropdown.Item>)
