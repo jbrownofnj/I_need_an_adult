@@ -44,8 +44,11 @@ class Api::UsersController < ApplicationController
   end
 
   def create_user
+    
     @user = User.new(user_params) 
+    
     if @user.save
+      
       UserMailer.registration_confirmation(@user).deliver_later
       render json:{message:"nicely created"}
     else
@@ -77,7 +80,7 @@ end
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.permit(:user_name, :color_coefficient, :user_email, :email_validated, :password)
+      params.require(:user).permit(:user_name, :color_coefficient, :user_email, :email_validated, :password)
     end
    
 end

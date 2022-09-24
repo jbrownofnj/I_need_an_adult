@@ -70,7 +70,7 @@ export default function CreateAccountPage() {
  
   function handleSubmit(event) {
     event.preventDefault()
-    const createThisUser={user_name:userName, color_coefficient:1, user_email:userEmail, password:password}
+    const createThisUser={user:{user_name:userName, color_coefficient:1, user_email:userEmail, password:password}}
     fetch("api/createUser",{
       method:"POST",
       headers:{

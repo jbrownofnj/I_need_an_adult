@@ -6,7 +6,8 @@
 
 # Ignore bundler config.
 /.bundle
-
+# Ignore passwords for email
+/config/initializers/app_env_vars.rb
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*

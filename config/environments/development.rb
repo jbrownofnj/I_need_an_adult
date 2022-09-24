@@ -65,10 +65,12 @@ config.action_mailer.default_url_options = { host: host }
 config.action_mailer.smtp_settings = {
   :address              => "smtp.gmail.com",
   :port                 => 587,
-  :user_name            => 'inau.pw.validation@gmail.com',
-  :password             => "gxabucrnewsifcoh",
+  :user_name            => ENV['MAILER_EMAIL'],
+  :password             => ENV['MAILER_PASSWORD'],
   :authentication       => "plain",
-  :enable_starttls_auto => true
+  :enable_starttls_auto => true,
+  :open_timeout         => 5,
+  :read_timeout         => 5
 }
 
   # Raises error for missing translations.
